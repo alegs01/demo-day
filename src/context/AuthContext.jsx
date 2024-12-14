@@ -13,7 +13,7 @@ import {
 const firebaseConfig = {
   // Replace with your Firebase config
   apiKey: "AIzaSyDFLS4PjYXWltXYrB3FvP3sb28WgM2RQDo",
-  authDomain: "https://asesorame.netlify.app",
+  authDomain: "asesorame-f796d.firebaseapp.com",
   projectId: "asesorame-f796d",
   storageBucket: "asesorame-f796d.firebasestorage.app",
   messagingSenderId: "295135987284",
