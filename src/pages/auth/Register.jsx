@@ -14,22 +14,12 @@ export default function Register() {
     try {
       const { email, password } = data;
       await registerAuth(email, password, userType);
-      // Después de registrar al usuario en Firebase, guardamos en nuestra base de datos
-      const response = await fetch('http://localhost:5000/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, role: userType }),
-      });
 
-      const result = await response.json();
-      if (response.status === 201) {
-        if (userType === 'client') {
-          navigate('/advisors');
-        } else {
-          navigate('/profile');
-        }
+      // Navegar según el tipo de usuario
+      if (userType === 'client') {
+        navigate('/advisors');
       } else {
-        setErrorMessage(result.message || 'Error al registrar el usuario');
+        navigate('/profile');
       }
     } catch (error) {
       console.error('Error al registrarse:', error);
@@ -38,46 +28,16 @@ export default function Register() {
   };
 
   const handleGoogleRegister = async () => {
-  try {
+    try {
+      const user = await loginWithGoogle();
+      console.log('Usuario registrado con Google:', user);
 
-    const user = await loginWithGoogle();
-    const uidAsPassword = user.uid;
-
-    // Registra al usuario en tu backend
-    const response = await fetch('http://localhost:5000/api/auth/google-login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: user.email,
-        password: uidAsPassword,
-        role: userType,
-      }),
-    });
-
-    const data = await response.json();
-
-    if (response.status === 200) {
-      // Al recibir una respuesta exitosa, guarda el token y redirige
-      localStorage.setItem('token', data.token); // Guarda el token JWT en el localStorage
-      console.log(data.token);
-
-            // Decodificar el token para obtener el userId
-      const decodedToken = data.token;
-      const userId = decodedToken.userId;  // Asegúrate de que el token contenga este campo
-
-      // Usar el userId en tu lógica
-      console.log('User ID:', userId);
-
-      navigate('/'); // Redirige al usuario a la página principal
-    } else {
-      setErrorMessage(data.message || 'Error al iniciar sesión con Google');
+      navigate('/'); // Redirigir a la página principal
+    } catch (error) {
+      console.error('Error al registrarse con Google:', error);
+      setErrorMessage('Ocurrió un error al registrarte con Google. Por favor, intenta de nuevo.');
     }
-  } catch (error) {
-    console.error('Error al registrarse con Google:', error);
-    setErrorMessage('Error al conectarse con Google');
-  }
-};
-
+  };
 
   return (
     <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-8">
@@ -131,12 +91,12 @@ export default function Register() {
 
       <div className="mt-6">
         <button onClick={handleGoogleRegister} className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-              <img
-                className="h-5 w-5 mr-2"
-                src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-                alt="Google logo"
-              />
-              Registrate con Google
+          <img
+            className="h-5 w-5 mr-2"
+            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+            alt="Google logo"
+          />
+          Registrate con Google
         </button>
       </div>
     </div>
