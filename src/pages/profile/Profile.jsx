@@ -141,6 +141,15 @@ const AdvisorProfileEdit = () => {
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Campos del formulario de edición */}
         <div>
+          <input
+            type="text"
+            name="avatar"
+            value={editingProfile.avatar || ""}
+            onChange={handleInputChange}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-indigo-200"
+          />
+        </div>
+        <div>
           <label className="block text-gray-600 mb-2">Nombre:</label>
           <input
             type="text"
@@ -157,19 +166,6 @@ const AdvisorProfileEdit = () => {
             type="text"
             name="lastName"
             value={editingProfile.lastName || ""}
-            onChange={handleInputChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-indigo-200"
-          />
-        </div>
-
-        <div>
-          <label className="block text-gray-600 mb-2">
-            Foto de perfil (URL):
-          </label>
-          <input
-            type="text"
-            name="avatar"
-            value={editingProfile.avatar || ""}
             onChange={handleInputChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-indigo-200"
           />
